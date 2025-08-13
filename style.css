@@ -27,7 +27,6 @@ body {
     padding: 0 20px;
 }
 
-/* Header Styles */
 header {
     background-color: var(--dark);
     padding: 15px 0;
@@ -56,7 +55,6 @@ header {
     transform: scale(1.05);
 }
 
-/* Navigation */
 nav ul {
     display: flex;
     list-style: none;
@@ -104,7 +102,6 @@ nav ul li a:hover::after {
     padding: 5px;
 }
 
-/* Hero Section */
 .hero {
     height: 100vh;
     display: flex;
@@ -179,7 +176,6 @@ nav ul li a:hover::after {
     color: var(--primary);
 }
 
-/* Buttons */
 .btn {
     display: inline-block;
     background-color: var(--primary);
@@ -215,7 +211,6 @@ nav ul li a:hover::after {
     margin-top: 30px;
 }
 
-/* Services Section */
 .services {
     padding: 100px 0;
     background-color: var(--dark-gray);
@@ -268,7 +263,6 @@ nav ul li a:hover::after {
     margin-bottom: 15px;
 }
 
-/* Stores Section */
 .stores {
     padding: 100px 0;
     background-color: var(--dark);
@@ -343,7 +337,6 @@ nav ul li a:hover::after {
     text-decoration: underline;
 }
 
-/* Links Section */
 .quick-links {
     padding: 60px 0;
     background-color: var(--dark-gray);
@@ -393,7 +386,6 @@ nav ul li a:hover::after {
     color: var(--primary);
 }
 
-/* Contact Section */
 .contact {
     padding: 100px 0;
     background-color: var(--dark);
@@ -457,7 +449,6 @@ nav ul li a:hover::after {
     border: 1px solid var(--primary);
 }
 
-/* Footer */
 footer {
     background-color: var(--medium-gray);
     padding: 40px 0 20px;
@@ -522,7 +513,6 @@ footer {
     margin-top: 20px;
 }
 
-/* Responsive Design */
 @media (max-width: 992px) {
     .hero-content,
     .contact-container {
@@ -633,7 +623,6 @@ footer {
     }
 }
 
-/* Estilo para a seção de compra */
 .purchase-cta {
     background-color: var(--dark-gray);
     padding: 30px;
@@ -736,7 +725,6 @@ footer {
     font-size: 1rem;
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .purchase-cta h3 {
         font-size: 1.5rem;
@@ -797,7 +785,6 @@ footer {
     color: var(--primary);
 }
 
-/* Estilo para a seção de links rápidos */
 .quick-links-section {
     background-color: var(--dark-gray);
     padding: 30px;
@@ -902,14 +889,12 @@ footer {
     transform: translateX(3px);
 }
 
-/* Responsivo */
 @media (max-width: 768px) {
     .quick-links-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* ===== CTA SECTION ===== */
 .purchase-cta {
     background: linear-gradient(135deg, #34373f 0%, #1a1a1a 100%);
     padding: 30px;
@@ -1074,12 +1059,10 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Estilo para o feedback */
 #formFeedback {
     transition: all 0.3s ease;
 }
 
-/* Estilo para o botão durante o envio */
 button[disabled] {
     opacity: 0.7;
     cursor: not-allowed;
