@@ -1,51 +1,54 @@
-<!DOCTYPE="en-US">
-<html lang="en-US"><head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+Seu README está como um HTML bruto do GitHub Pages, mas geralmente o ideal é transformá-lo em **Markdown** limpo, bem estruturado e direto, sem as tags HTML desnecessárias.
+Aqui vai uma versão organizada do seu README em **Markdown** (mais legível e padrão do GitHub):
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>feedback | SITEACRETEC</title>
-<meta name="generator" content="Jekyll v3.10.0">
-<meta property="og:title" content="feedback">
-<meta property="og:locale" content="en_US">
-<link rel="canonical" href="https://marketingacretec.github.io/SITEACRETEC/">
-<meta property="og:url" content="https://marketingacretec.github.io/SITEACRETEC/">
-<meta property="og:site_name" content="SITEACRETEC">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
-<meta property="twitter:title" content="feedback">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebSite","headline":"feedback","name":"SITEACRETEC","url":"https://marketingacretec.github.io/SITEACRETEC/"}</script>
-<!-- End Jekyll SEO tag -->
+---
 
-    <link rel="stylesheet" href="/SITEACRETEC/assets/css/style.css?v=2a1804f3b63a84ea0258ecb948cafe9a55091159">
-    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+# SITEACRETEC - Feedback
 
-<!-- Setup Google Analytics -->
+Um aplicativo web responsivo para **coletar avaliações de treinamentos da Hikvision**.
 
+✨ **Funcionalidades principais:**
 
+* Formulário simplificado, baseado em guias.
+* Interface de usuário com **tema escuro**.
+* Construído com **HTML, CSS (fonte Poppins) e JavaScript**.
+* Integração com **Sheet Monkey** para envio de dados em tempo real.
 
-<!-- You can set your favicon here -->
-<!-- link rel="shortcut icon" type="image/x-icon" href="/SITEACRETEC/favicon.ico" -->
+🔗 **Acesse o projeto:**
+[👉 Clique aqui para visualizar](https://marketingacretec.github.io/SITEACRETEC/)
 
-<!-- end custom head snippets -->
+---
 
-  </head>
-  <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1><a href="https://marketingacretec.github.io/SITEACRETEC/">SITEACRETEC</a></h1>
-      
+## 🚀 Tecnologias utilizadas
 
-      <h1 id="feedback">feedback</h1>
-<p>Um aplicativo web responsivo para coletar avaliações de treinamento para cursos da Hikvision. Apresenta um formulário simplificado, baseado em guias, com uma interface de usuário com tema escuro, construído com HTML, CSS (fonte Poppins) e JavaScript. Integra-se ao Sheet Monkey para envio de dados sem interrupções.</p>
+* **HTML5**
+* **CSS3** (com fonte *Poppins*)
+* **JavaScript**
+* **Sheet Monkey** (para integração de dados)
 
+---
 
-      
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
-    <script>anchors.add();</script>
-  
+## 📷 Preview
 
-</body></html>
+*(adicione aqui um print ou GIF do site quando possível)*
+
+---
+
+## 📌 Como usar
+
+1. Clone o repositório:
+
+   ```bash
+   git clone https://github.com/marketingacretec/SITEACRETEC.git
+   ```
+2. Abra o arquivo `index.html` no navegador.
+
+---
+
+## 📄 Licença
+
+Este projeto é de uso interno da **Acretec Distribuidora**.
+
+---
+
+Quer que eu deixe esse README mais **formal e corporativo**, ou prefere um estilo mais **amigável e visual**, cheio de ícones e emojis para chamar atenção?
