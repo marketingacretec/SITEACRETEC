@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // ===== MOBILE MENU TOGGLE =====
     const menuBtn = document.querySelector('.mobile-menu-btn');
     const menu = document.getElementById('menu');
     
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     menuBtn.addEventListener('click', toggleMenu);
     
-    // ===== SMOOTH SCROLLING =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -33,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // ===== CLOSE MENU WHEN CLICKING OUTSIDE =====
     document.addEventListener('click', (e) => {
         if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
             menu.classList.remove('show');
@@ -41,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ===== FORM SUBMISSION =====
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
@@ -51,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const feedbackDiv = document.getElementById('formFeedback');
             const originalText = submitButton.innerHTML;
             
-            // Show loading state
             submitButton.disabled = true;
             submitButton.innerHTML = 'Enviando... <i class="fas fa-spinner fa-spin"></i>';
             feedbackDiv.style.display = 'none';
@@ -66,15 +61,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 if (response.ok) {
-                    // Show success message
                     feedbackDiv.className = 'form-feedback success';
                     feedbackDiv.textContent = 'Mensagem enviada com sucesso!';
                     feedbackDiv.style.display = 'block';
                     
-                    // Reset form
                     this.reset();
                     
-                    // Reload page after 2 seconds
                     setTimeout(() => {
                         window.location.reload();
                     }, 2000);
@@ -83,17 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } catch (error) {
                 console.error('Error:', error);
-                // Show error message
                 feedbackDiv.className = 'form-feedback error';
                 feedbackDiv.textContent = 'Erro ao enviar. Tente novamente.';
                 feedbackDiv.style.display = 'block';
                 
-                // Hide error message after 5 seconds
                 setTimeout(() => {
                     feedbackDiv.style.display = 'none';
                 }, 5000);
             } finally {
-                // Restore button
                 submitButton.disabled = false;
                 submitButton.innerHTML = originalText;
             }
