@@ -1,72 +1,111 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('trainingEvaluationForm');
-    const thankYouMessage = document.getElementById('thankYouMessage');
-    const tabs = document.querySelectorAll('.tab-content');
-    const nextButtons = document.querySelectorAll('.next-btn');
-    const prevButtons = document.querySelectorAll('.prev-btn');
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para validar se todos os campos obrigatórios em uma aba estão preenchidos
+    function validateTab(tabId) {
+        const tab = document.getElementById(tabId);
+        const requiredFields = tab.querySelectorAll('input[required], select[required], textarea[required]');
+        let allFilled = true;
 
-    // Função para alternar abas
-    function switchTab(targetTabId) {
-        tabs.forEach(tab => {
-            tab.classList.remove('active');
-            if (tab.id === targetTabId) {
-                tab.classList.add('active');
+        requiredFields.forEach(field => {
+            if (field.type === 'radio') {
+                const groupName = field.name;
+                const checked = tab.querySelector(`input[name="${groupName}"]:checked`);
+                if (!checked) {
+                    allFilled = false;
+                }
+            } else if (field.type === 'checkbox') {
+                if (!field.checked) {
+                    allFilled = false;
+                }
+            } else if (!field.value.trim()) {
+                allFilled = false;
             }
         });
+
+        return allFilled;
     }
 
-    // Adicionar eventos aos botões "Próximo" e "Anterior"
-    nextButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab');
-            switchTab(targetTab);
+    // Configurar os botões "Próximo"
+    document.querySelectorAll('.next-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const currentTab = this.closest('.tab-content').id;
+            const nextTabId = this.getAttribute('data-tab');
+
+            if (!validateTab(currentTab)) {
+                alert('Por favor, preencha todos os campos obrigatórios antes de prosseguir.');
+                return;
+            }
+
+            // Mostrar a próxima aba
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(nextTabId).style.display = 'block';
         });
     });
 
-    prevButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab');
-            switchTab(targetTab);
+    // Configurar o botão "Anterior"
+    document.querySelectorAll('.prev-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const prevTabId = this.getAttribute('data-tab');
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            document.getElementById(prevTabId).style.display = 'block';
         });
     });
 
-    // Manipular envio do formulário
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitButton = form.querySelector('.submit-btn');
-        const spinner = submitButton.querySelector('.fas.fa-spinner');
-        
-        // Exibir spinner
-        spinner.style.display = 'inline-block';
-        submitButton.disabled = true;
+    // Configurar o envio do formulário
+    const form = document.getElementById('trainingEvaluationForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const allTabs = ['info', 'estrutura', 'organizacao', 'instrutores', 'participantes'];
+        let allValid = true;
 
+        allTabs.forEach(tabId => {
+            if (!validateTab(tabId)) {
+                allValid = false;
+            }
+        });
+
+        if (!allValid) {
+            alert('Por favor, preencha todos os campos obrigatórios em todas as abas antes de enviar.');
+            return;
+        }
+
+        // Log FormData para depuração
         const formData = new FormData(form);
-        
-        // Logar dados do formulário
-        for (const [key, value] of formData.entries()) {
+        for (let [key, value] of formData.entries()) {
             console.log(`FormData: ${key} = ${value}`);
         }
 
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                console.log('Formulário enviado com sucesso!');
-                form.style.display = 'none';
-                thankYouMessage.style.display = 'block';
-            } else {
-                console.error('Erro ao enviar formulário:', response.status, response.statusText);
-                alert('Erro ao enviar a avaliação. Tente novamente.');
+        // Enviar para o Sheet Monkey
+        fetch('https://api.sheetmonkey.io/form/idKcZD9u6rigDPsrkTjrjF', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
             }
-        } catch (error) {
-            console.error('Erro de rede:', error);
-            alert('Erro ao enviar a avaliação: ' + error.message);
-        } finally {
-            spinner.style.display = 'none';
-            submitButton.disabled = false;
-        }
+        })
+        .then(response => {
+            if (response.ok) {
+                form.style.display = 'none';
+                document.getElementById('thankYouMessage').style.display = 'block';
+                form.reset();
+                setTimeout(() => {
+                    document.querySelectorAll('.tab-content').forEach(tab => {
+                        tab.style.display = 'none';
+                    });
+                    document.getElementById('info').style.display = 'block';
+                    form.style.display = 'block';
+                    document.getElementById('thankYouMessage').style.display = 'none';
+                }, 3000);
+            } else {
+                alert('Erro ao enviar o formulário. Tente novamente.');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao enviar o formulário. Verifique sua conexão.');
+        });
     });
 });
