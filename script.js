@@ -1,111 +1,91 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Função para validar se todos os campos obrigatórios em uma aba estão preenchidos
-    function validateTab(tabId) {
-        const tab = document.getElementById(tabId);
-        const requiredFields = tab.querySelectorAll('input[required], select[required], textarea[required]');
-        let allFilled = true;
-
-        requiredFields.forEach(field => {
-            if (field.type === 'radio') {
-                const groupName = field.name;
-                const checked = tab.querySelector(`input[name="${groupName}"]:checked`);
-                if (!checked) {
-                    allFilled = false;
-                }
-            } else if (field.type === 'checkbox') {
-                if (!field.checked) {
-                    allFilled = false;
-                }
-            } else if (!field.value.trim()) {
-                allFilled = false;
-            }
-        });
-
-        return allFilled;
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const menu = document.getElementById('menu');
+    
+    function toggleMenu() {
+        menu.classList.toggle('show');
+        menuBtn.innerHTML = menu.classList.contains('show') ? 
+            '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
     }
-
-    // Configurar os botões "Próximo"
-    document.querySelectorAll('.next-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const currentTab = this.closest('.tab-content').id;
-            const nextTabId = this.getAttribute('data-tab');
-
-            if (!validateTab(currentTab)) {
-                alert('Por favor, preencha todos os campos obrigatórios antes de prosseguir.');
-                return;
+    
+    menuBtn.addEventListener('click', toggleMenu);
+    
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                if (menu.classList.contains('show')) {
+                    toggleMenu();
+                }
             }
-
-            // Mostrar a próxima aba
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
-            });
-            document.getElementById(nextTabId).style.display = 'block';
         });
     });
-
-    // Configurar o botão "Anterior"
-    document.querySelectorAll('.prev-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const prevTabId = this.getAttribute('data-tab');
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
-            });
-            document.getElementById(prevTabId).style.display = 'block';
-        });
+    
+    document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+            menu.classList.remove('show');
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+        }
     });
-
-    // Configurar o envio do formulário
-    const form = document.getElementById('trainingEvaluationForm');
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const allTabs = ['info', 'estrutura', 'organizacao', 'instrutores', 'participantes'];
-        let allValid = true;
-
-        allTabs.forEach(tabId => {
-            if (!validateTab(tabId)) {
-                allValid = false;
-            }
-        });
-
-        if (!allValid) {
-            alert('Por favor, preencha todos os campos obrigatórios em todas as abas antes de enviar.');
-            return;
-        }
-
-        // Log FormData para depuração
-        const formData = new FormData(form);
-        for (let [key, value] of formData.entries()) {
-            console.log(`FormData: ${key} = ${value}`);
-        }
-
-        // Enviar para o Sheet Monkey
-        fetch('https://api.sheetmonkey.io/form/idKcZD9u6rigDPsrkTjrjF', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                form.style.display = 'none';
-                document.getElementById('thankYouMessage').style.display = 'block';
-                form.reset();
+    
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitButton = this.querySelector('button[type="submit"]');
+            const feedbackDiv = document.getElementById('formFeedback');
+            const originalText = submitButton.innerHTML;
+            
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Enviando... <i class="fas fa-spinner fa-spin"></i>';
+            feedbackDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('https://formspree.io/f/xanbvple', {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    feedbackDiv.className = 'form-feedback success';
+                    feedbackDiv.textContent = 'Mensagem enviada com sucesso!';
+                    feedbackDiv.style.display = 'block';
+                    
+                    this.reset();
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    throw new Error('Erro no envio');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                feedbackDiv.className = 'form-feedback error';
+                feedbackDiv.textContent = 'Erro ao enviar. Tente novamente.';
+                feedbackDiv.style.display = 'block';
+                
                 setTimeout(() => {
-                    document.querySelectorAll('.tab-content').forEach(tab => {
-                        tab.style.display = 'none';
-                    });
-                    document.getElementById('info').style.display = 'block';
-                    form.style.display = 'block';
-                    document.getElementById('thankYouMessage').style.display = 'none';
-                }, 3000);
-            } else {
-                alert('Erro ao enviar o formulário. Tente novamente.');
+                    feedbackDiv.style.display = 'none';
+                }, 5000);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao enviar o formulário. Verifique sua conexão.');
         });
-    });
+    }
 });
